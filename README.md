@@ -1,2 +1,2 @@
-# iconographia
-An application in Django for the Iconographia project
+# iconographia-app
+A Django application for the iconographia backend and database
