@@ -9,6 +9,7 @@ class ImageModel(admin.ModelAdmin):
     fields = get_fields(Image).append('image_preview')
     readonly_fields = ('image_preview',)
     list_display = ('bild', 'thumbnail_preview')
+    search_fields = ('bildfil',)
 
     def image_preview(self, obj):
         return format_html(f'<img src="https://img.dh.gu.se/art/pyr/{obj.bild}.tif/full/full/0/default.jpg" height="300" />')
@@ -31,6 +32,7 @@ class ParishAdmin(admin.ModelAdmin):
     fields = get_fields(Parish) 
     list_display = ['name', 'id', 'parent', 'origin', 'province', 'county']
     list_filter = ['province',]
+    search_fields = ['name']
 
 
 @admin.register(Object)
@@ -38,6 +40,7 @@ class ObjectAdmin(admin.ModelAdmin):
     fields = get_fields(Object) 
     list_display = ['objektid', 'objekt', 'undertyp', 'motiv']
     list_filter = ['dat_min', 'dat_max']
+    autocomplete_fields = ['main_image', 'parish', 'place']
 
 
 @admin.register(Place)
