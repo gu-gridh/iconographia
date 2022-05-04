@@ -1,42 +1,35 @@
-from collections import OrderedDict, defaultdict
-from rest_framework.fields import SkipField
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
+from drf_dynamic_fields import DynamicFieldsMixin
 from . import models
-from rest_framework.relations import PKOnlyObject
-from django.db import connection
-class MetaObjectSerializer(serializers.ModelSerializer):
+
+from diana.abstract.models import get_fields
+
+class ObjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = models.Object
-        fields = '__all__'
+        fields = get_fields(models.Object)
         depth = 1
 
-class ObjectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Object
-        fields = '__all__'
-        depth = 1
-
-
-class ParishSerializer(serializers.ModelSerializer):
+class ParishSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = models.Parish
         fields = '__all__'
         depth = 1
 
-class PlaceSerializer(GeoFeatureModelSerializer):
+class PlaceSerializer(DynamicFieldsMixin, GeoFeatureModelSerializer):
     class Meta:
         model = models.Place
-        fields = '__all__'
+        fields = get_fields(models.Place)
         geo_field = 'geom'
 
-class MotiveSerializer(serializers.ModelSerializer):
+class MotiveSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = models.Motive
         fields = '__all__'
         depth = 1
 
-class ImageSerializer(serializers.ModelSerializer):
+class ImageSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = models.Image
         fields = '__all__'
