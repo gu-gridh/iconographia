@@ -5,26 +5,27 @@ from django.views.generic import TemplateView
 
 from . import views
 
+import diana.utils as utils
+
 router = routers.DefaultRouter()
 
+# Manual viewsets
 router.register(r'api/object', views.ObjectViewSet, basename='object')
 router.register(r'api/place', views.PlaceViewSet, basename='place')
-router.register(r'api/parish', views.ParishViewSet, basename='parish')
-router.register(r'api/image', views.ImageViewSet, basename='image')
-router.register(r'api/motive', views.MotiveViewSet, basename='motive')
+
 urlpatterns = [
     path('', include(router.urls)),
-    path('api/schema', get_schema_view(
+    path('api/schema/', get_schema_view(
         title="Iconographia",
         description="Schema for the Iconographia API at the Centre for Digital Humanities",
-        version="1.0.0"
+        version="1.0.0",
+        urlconf="diana.urls"
     ), name='openapi-schema'),
-    path('swagger-ui/', TemplateView.as_view(
-        template_name='swagger-ui.html',
-        extra_context={'schema_url':'openapi-schema'}
-    ), name='swagger-ui'),
-    path('redoc-ui/', TemplateView.as_view(
+    path('documentation/', TemplateView.as_view(
         template_name='redoc-ui.html',
         extra_context={'schema_url':'openapi-schema'}
     ), name='redoc-ui'),
+
+    # Automatically generated views
+    *utils.get_model_urls('iconographia', 'api', exclude=['object', 'place', 'collabels']),
 ]
