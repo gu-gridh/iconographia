@@ -44,7 +44,7 @@ class ObjectAdmin(admin.ModelAdmin):
 
 
 @admin.register(Place)
-class PlaceAdmin(admin.OSMGeoAdmin):
+class PlaceAdmin(admin.GISModelAdmin):
     fields = get_fields(Place)
     list_display = ['name', 'county', 'country', 'parish']
     list_filter = ['country']
